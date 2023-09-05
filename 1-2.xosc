@@ -3,10 +3,13 @@
 <OpenSCENARIO>
     <FileHeader revMajor="1" revMinor="1" date="2022-11-15T10:00:00" description="Demonstrate ALKS controller" author="esmini-team"/>
     <ParameterDeclarations>
-        <ParameterDeclaration name="v0" parameterType="double" value="16"/>
+        <ParameterDeclaration name="v0_e" parameterType="double" value="16"/>
         <ParameterDeclaration name="EgoS" parameterType="double" value="32"/>
-        <ParameterDeclaration name="vp" parameterType="double" value="1.0"/>
-        <ParameterDeclaration name="PedestrianS" parameterType="double" value="200"/>
+        <ParameterDeclaration name="v0_p" parameterType="double" value="1.0"/>
+        <ParameterDeclaration name="PedestrianS" parameterType="double" value="70"/>
+        <ParameterDeclaration name="Dy" parameterType="double" value="-3"/>
+        <ParameterDeclaration name="Dy" parameterType="double" value="-3"/>
+        <ParameterDeclaration name="Dy" parameterType="double" value="-3"/>
     </ParameterDeclarations>
     <CatalogLocations>
         <VehicleCatalog>
@@ -17,6 +20,7 @@
         </PedestrianCatalog>
         <ControllerCatalog>
             <Directory path="../xosc/Catalogs/Controllers"/>
+            <!-- 歩行者と車の停止条件 -->
         </ControllerCatalog>
     </CatalogLocations>
     <RoadNetwork>
@@ -61,7 +65,7 @@
                             <SpeedAction>
                                 <SpeedActionDynamics dynamicsShape="step" dynamicsDimension="time" value="0.0"/>
                                 <SpeedActionTarget>
-                                    <AbsoluteTargetSpeed value="$v0"/>
+                                    <AbsoluteTargetSpeed value="$v0_e"/>
                                 </SpeedActionTarget>
                             </SpeedAction>
                         </LongitudinalAction>
@@ -82,7 +86,7 @@
                                         <Polyline>
                                             <TeleportAction>
                                                 <Position>
-                                                    <LanePosition roadId="1" laneId="-2" offset="0" s="${$PedestrianS}"/>
+                                                    <LanePosition roadId="1" laneId="-2" offset="$Dy" s="${$PedestrianS}"/>
                                                     <Orientation type="relative" h="0" p="0" r="0" />
                                                 </Position>
                                             </TeleportAction>
@@ -141,7 +145,7 @@
                                         <SpeedAction>
                                             <SpeedActionDynamics dynamicsShape="step" dynamicsDimension="time" value="0.0"/>
                                             <SpeedActionTarget>
-                                                <AbsoluteTargetSpeed value="$vp"/>
+                                                <AbsoluteTargetSpeed value="$v0_p"/>
                                             </SpeedActionTarget>
                                         </SpeedAction>
                                     </LongitudinalAction>
