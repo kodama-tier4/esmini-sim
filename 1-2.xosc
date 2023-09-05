@@ -7,9 +7,9 @@
         <ParameterDeclaration name="EgoS" parameterType="double" value="32"/>
         <ParameterDeclaration name="v0_p" parameterType="double" value="1.0"/>
         <ParameterDeclaration name="PedestrianS" parameterType="double" value="70"/>
-        <ParameterDeclaration name="Dy" parameterType="double" value="-3"/>
-        <ParameterDeclaration name="Dy" parameterType="double" value="-3"/>
-        <ParameterDeclaration name="Dy" parameterType="double" value="-3"/>
+        <ParameterDeclaration name="Dy" parameterType="double" value="1"/>
+        <ParameterDeclaration name="a" parameterType="double" value="0.196"/>
+        <ParameterDeclaration name="td" parameterType="double" value="0.7"/>
     </ParameterDeclarations>
     <CatalogLocations>
         <VehicleCatalog>
