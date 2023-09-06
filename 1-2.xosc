@@ -10,6 +10,13 @@
         <ParameterDeclaration name="Dy" parameterType="double" value="1"/>
         <ParameterDeclaration name="a" parameterType="double" value="0.196"/>
         <ParameterDeclaration name="td" parameterType="double" value="0.7"/>
+
+        <ParameterDeclaration name="flag1" parameterType="double" value="0"/>
+        <ParameterDeclaration name="flag2" parameterType="double" value="0"/>
+        <ParameterDeclaration name="flag3" parameterType="double" value="0"/>
+        <ParameterDeclaration name="flag4" parameterType="double" value="0"/>
+        <ParameterDeclaration name="flag5" parameterType="double" value="0"/>
+        <ParameterDeclaration name="flag6" parameterType="double" value="0"/>
     </ParameterDeclarations>
     <CatalogLocations>
         <VehicleCatalog>
@@ -20,7 +27,6 @@
         </PedestrianCatalog>
         <ControllerCatalog>
             <Directory path="../xosc/Catalogs/Controllers"/>
-            <!-- 歩行者と車の停止条件 -->
         </ControllerCatalog>
     </CatalogLocations>
     <RoadNetwork>
