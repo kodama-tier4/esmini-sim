@@ -3,8 +3,19 @@
     <ParameterDeclarations>
         <ParameterDeclaration name="v0_e" parameterType="double" value="15" />
         <ParameterDeclaration name="EgoS" parameterType="double" value="0" />
-        <ParameterDeclaration name="v0_p" parameterType="double" value="10" />
+        <ParameterDeclaration name="v0_p" parameterType="double" value="1" />
         <ParameterDeclaration name="PedestrianS" parameterType="double" value="80" />
+        <ParameterDeclaration name="Dy" parameterType="double" value="-10" />
+        <ParameterDeclaration name="a" parameterType="double" value="0.196" />
+        <ParameterDeclaration name="td" parameterType="double" value="0.7" />
+
+        <ParameterDeclaration name="timeflag" parameterType="double" value="100" />
+        
+        <ParameterDeclaration name="flag2" parameterType="double" value="0" />
+        <ParameterDeclaration name="flag3" parameterType="double" value="0" />
+        <ParameterDeclaration name="flag4" parameterType="double" value="0" />
+        <ParameterDeclaration name="flag5" parameterType="double" value="0" />
+        <ParameterDeclaration name="flag6" parameterType="double" value="0" />
     </ParameterDeclarations>
     <CatalogLocations>
         <VehicleCatalog>
@@ -13,10 +24,7 @@
         <PedestrianCatalog>
             <Directory path="../xosc/Catalogs/Pedestrians" />
         </PedestrianCatalog>
-        <ControllerCatalog>
-            <Directory path="../xosc/Catalogs/Controllers" />
-            
-        </ControllerCatalog>
+        
     </CatalogLocations>
     <RoadNetwork>
         <LogicFile filepath="../xodr/straight_500m.xodr" />
@@ -25,19 +33,7 @@
         <ScenarioObject name="Ego">
             <CatalogReference catalogName="VehicleCatalog" entryName="car_white" />
             <ObjectController>
-                <CatalogReference catalogName="ControllerCatalog" entryName="ALKS_R157SM_Controller">
-                    <ParameterAssignments>
-                        <ParameterAssignment parameterRef="Mode" value="override" />
-                        <ParameterAssignment parameterRef="Model" value="ReferenceDriver" />
-                        <ParameterAssignment parameterRef="LogLevel" value="2" />
-                        <ParameterAssignment parameterRef="Cruise" value="false" />
-                        <ParameterAssignment parameterRef="CutInPerceptionDelayMode" value="Time" />
-                        <ParameterAssignment parameterRef="FullStop" value="true" />
-                        <ParameterAssignment parameterRef="PedestrianRiskEvaluationTime" value="0.4" />
-                        <ParameterAssignment parameterRef="AlwaysTrigOnScenario" value="true" />
-                        <ParameterAssignment parameterRef="OverlapTolerance" value="0.0" />
-                    </ParameterAssignments>
-                </CatalogReference>
+                
             </ObjectController>
         </ScenarioObject>
         <ScenarioObject name="Pedestrian">
@@ -81,7 +77,7 @@
                                         <Polyline>
                                             <TeleportAction>
                                                 <Position>
-                                                    <LanePosition roadId="1" laneId="-2" offset="0" s="${$PedestrianS}" />
+                                                    <LanePosition roadId="1" laneId="-2" offset="$Dy" s="${$PedestrianS}" />
                                                     <Orientation type="relative" h="0" p="0" r="0" />
                                                 </Position>
                                             </TeleportAction>
@@ -92,7 +88,6 @@
                                                     </LanePosition>
                                                 </Position>
                                             </Vertex>
-                                            
                                         </Polyline>
                                     </Shape>
                                 </Trajectory>
@@ -112,7 +107,6 @@
             </Actions>
         </Init>
         <Story name="MyStory">
-            <ParameterDeclarations />
             <Act name="CutInAndBrakeAct">
                 <ManeuverGroup maximumExecutionCount="1" name="MyManeuverGroup">
                     <Actors selectTriggeringEntities="false">
@@ -144,8 +138,37 @@
                         </Event>
                     </Maneuver>
                 </ManeuverGroup>
-                <StartTrigger />
-                <StopTrigger />
+                <ManeuverGroup maximumExecutionCount="1" name="MyManeuverGroup2">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Ego" />
+                    </Actors>
+                    <Maneuver name="EgoSpeedManeuver">
+                        <Event name="StopVehicleEvent" priority="overwrite">
+                            <Action name="StopVehicleAction">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="0.196" />
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="0" />
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition name="DelayConditionForStopping" delay="0" conditionEdge="rising">
+                                        <ByValueCondition>
+                                            <SimulationTimeCondition name="TimerParameter" value="$timeflag" rule="greaterThan" />
+                                            
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
             </Act>
         </Story>
         <StopTrigger>
