@@ -183,38 +183,128 @@
                 <ManeuverGroup maximumExecutionCount="1" name="MyManeuverGroup">
                     <Actors selectTriggeringEntities="true">
                         <EntityRef entityRef="Ego"/>
+
+
                     </Actors>
+                    <Maneuver name="EgoSpeedManeuver">
+                        <Event name="StopVehicleEvent" priority="overwrite">
 
-                    <Maneuver name="brake_Maneuver">
-                        <Event name="brake_Event" priority="overwrite">
-                            <Action name="brake_Action">
-                                <PrivateAction>
-                                    <LongitudinalAction>
-                                        <SpeedAction>
-                                            <SpeedActionDynamics dynamicsShape="linear" value="-5.1" dynamicsDimension="rate"/>
-                                            <SpeedActionTarget>
-                                                <AbsoluteTargetSpeed value="0"/>
-                                            </SpeedActionTarget>
-                                        </SpeedAction>
-                                    </LongitudinalAction>
-                                </PrivateAction>
-                            </Action>
+
                             
-                            <StartTrigger>
+
+                            <!-- 速度維持して進行（未横断が確定している）：(1)(6) -->
+                            
+
+                                <!-- 行動：速度0を目標にして、変更（停止） -->
+                                <!-- <Action name="StopVehicleAction">
+                                    <PrivateAction>
+                                        <LongitudinalAction>
+                                            <SpeedAction>
+                                                <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="0.196"/>
+                                                <SpeedActionTarget>
+                                                    <AbsoluteTargetSpeed value="0"/>
+                                                </SpeedActionTarget>
+                                            </SpeedAction>
+                                        </LongitudinalAction>
+                                    </PrivateAction>
+                                </Action> -->
+
                                 
-                                <ConditionGroup>
-                                    <Condition name="ExampleCondition" delay="0" conditionEdge="none">
-                                        <ByValueCondition>
-                                            <SpeedActionDynamics dynamicsShape="linear" value="-1.0" dynamicsDimension="rate"/>
-                                                <SimulationTimeConditionTarget >
-                                                    <EntityRef entityRef="Ego" />
-                                                </SimulationTimeConditionTarget>
-                                        </ByValueCondition>
-                                    </Condition>
-                                </ConditionGroup>
+                                <!-- 条件：ただの時間停止：ダミーみたいなもん -->
+                                <!-- <StartTrigger>   
+                                    <ConditionGroup>
+                                        <Condition name="DelayConditionForStopping" delay="0" conditionEdge="rising">
+                                            <ByValueCondition>
+                                                <SimulationTimeCondition name="TimerParameter" value="$timeflag" rule="greaterThan"/>
+                                                
+                                            </ByValueCondition>
+                                        </Condition>
+                                    </ConditionGroup>
 
-                            </StartTrigger>
+                                </StartTrigger> -->
+
+
+                            <!-- 通過して停止（減速）（横断が不確定のため、停止できる程度に減速する）：(2)(5) -->
+
+                            <!-- うまくいかんね -->
+
+                            <!-- 行動：速度1.53を目標にして、変更（停止） -->
+                                    <!-- <PrivateAction>
+                                        <LongitudinalAction>
+                                            <SpeedAction>
+                                                <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="0.196"/>
+                                                <SpeedActionTarget>
+                                                    <AbsoluteTargetSpeed value="1.53"/>
+                                                </SpeedActionTarget>
+                                            </SpeedAction>
+                                        </LongitudinalAction>
+                                    </PrivateAction> -->
+
+                                <!-- 2.4秒以内に衝突の可能性がある場合：判断に余裕がある -->
+                                <!-- <StartTrigger>
+                                    <ConditionGroup>
+                                    <Condition name="brake_Condition" delay="0" conditionEdge="rising">
+                                        <ByEntityCondition>
+                                            <TriggeringEntities triggeringEntitiesRule="any">
+                                                <EntityRef entityRef="Ego"/>
+                                            </TriggeringEntities>
+                                            <EntityCondition>
+                                                <TimeToCollisionCondition value="2.4"
+                                                                    freespace="true"
+                                                                    coordinatSystem="road"
+                                                                    relativeDistanceType="longitudinal"
+                                                                    rule="lessThan" >
+                                                    <TimeToCollisionConditionTarget >
+                                                        <EntityRef entityRef="Pedestrian" />
+                                                    </TimeToCollisionConditionTarget>
+                                                </TimeToCollisionCondition>
+                                            </EntityCondition>
+                                        </ByEntityCondition>
+                                    </Condition>
+                                    </ConditionGroup>
+                                </StartTrigger> -->
                             
+                            
+                            <!-- 手前で停止（横断が確定している）：(3)(4)想定 -->
+
+                                <!-- 行動：速度0を目標にして、変更（停止） -->
+                                <Action name="StopVehicleAction">
+                                    <PrivateAction>
+                                        <LongitudinalAction>
+                                            <SpeedAction>
+                                                <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="0.196"/>
+                                                <SpeedActionTarget>
+                                                    <AbsoluteTargetSpeed value="1.53"/>
+                                                </SpeedActionTarget>
+                                            </SpeedAction>
+                                        </LongitudinalAction>
+                                    </PrivateAction>
+                                </Action>
+
+                                <!-- 1.2秒以内に衝突の可能性がある場合 -->
+                                <StartTrigger>
+                                    <ConditionGroup>
+                                    <Condition name="brake_Condition" delay="0" conditionEdge="rising">
+                                        <ByEntityCondition>
+                                            <TriggeringEntities triggeringEntitiesRule="any">
+                                                <EntityRef entityRef="Ego"/>
+                                            </TriggeringEntities>
+                                            <EntityCondition>
+                                                <TimeToCollisionCondition value="1.2"
+                                                                    freespace="true"
+                                                                    coordinatSystem="road"
+                                                                    relativeDistanceType="longitudinal"
+                                                                    rule="lessThan" >
+                                                    <TimeToCollisionConditionTarget >
+                                                        <EntityRef entityRef="Pedestrian" />
+                                                    </TimeToCollisionConditionTarget>
+                                                </TimeToCollisionCondition>
+                                            </EntityCondition>
+                                        </ByEntityCondition>
+                                    </Condition>
+                                    </ConditionGroup>
+                                </StartTrigger>
+
                         </Event>
                     </Maneuver>
                 </ManeuverGroup>

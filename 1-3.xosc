@@ -1,0 +1,228 @@
+<OpenSCENARIO>
+    <FileHeader revMajor="1" revMinor="1" date="2022-11-15T10:00:00" description="Demonstrate ALKS controller" author="esmini-team" />
+    <ParameterDeclarations>
+        <ParameterDeclaration name="v0_e" parameterType="double" value="30" />
+        <ParameterDeclaration name="EgoS" parameterType="double" value="0" />
+        <ParameterDeclaration name="v0_p" parameterType="double" value="1" />
+        <ParameterDeclaration name="PedestrianS" parameterType="double" value="80" />
+        <ParameterDeclaration name="Dy" parameterType="double" value="-10" />
+        <ParameterDeclaration name="a" parameterType="double" value="0.196" />
+        <ParameterDeclaration name="td" parameterType="double" value="0.7" />
+
+        <ParameterDeclaration name="timeflag" parameterType="double" value="100" />
+        
+        <ParameterDeclaration name="flag2" parameterType="double" value="0" />
+        <ParameterDeclaration name="flag3" parameterType="double" value="0" />
+        <ParameterDeclaration name="flag4" parameterType="double" value="0" />
+        <ParameterDeclaration name="flag5" parameterType="double" value="0" />
+        <ParameterDeclaration name="flag6" parameterType="double" value="0" />
+    </ParameterDeclarations>
+    <CatalogLocations>
+        <VehicleCatalog>
+            <Directory path="../xosc/Catalogs/Vehicles" />
+        </VehicleCatalog>
+        <PedestrianCatalog>
+            <Directory path="../xosc/Catalogs/Pedestrians" />
+        </PedestrianCatalog>
+        
+    </CatalogLocations>
+    <RoadNetwork>
+        <LogicFile filepath="../xodr/straight_500m.xodr" />
+    </RoadNetwork>
+    <Entities>
+        <ScenarioObject name="Ego">
+            <CatalogReference catalogName="VehicleCatalog" entryName="car_white" />
+            <ObjectController>
+                
+            </ObjectController>
+        </ScenarioObject>
+        <ScenarioObject name="Pedestrian">
+            <CatalogReference catalogName="PedestrianCatalog" entryName="pedestrian_adult" />
+        </ScenarioObject>
+    </Entities>
+    <Storyboard>
+        <Init>
+            <Actions>
+                <Private entityRef="Ego">
+                    <PrivateAction>
+                        <TeleportAction>
+                            <Position>
+                                <LanePosition roadId="1" laneId="-1" offset="0" s="$EgoS" />
+                            </Position>
+                        </TeleportAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsShape="step" dynamicsDimension="time" value="0.0" />
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="$v0_e" />
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <ControllerAction>
+                            <ActivateControllerAction longitudinal="true" lateral="false" />
+                        </ControllerAction>
+                    </PrivateAction>
+                </Private>
+                <Private entityRef="Pedestrian">
+                    <PrivateAction>
+                        <RoutingAction>
+                            <FollowTrajectoryAction>
+                                <Trajectory closed="False" name="ped_traj">
+                                    <ParameterDeclarations />
+                                    <Shape>
+                                        <Polyline>
+                                            <TeleportAction>
+                                                <Position>
+                                                    <LanePosition roadId="1" laneId="-2" offset="$Dy" s="${$PedestrianS}" />
+                                                    <Orientation type="relative" h="0" p="0" r="0" />
+                                                </Position>
+                                            </TeleportAction>
+                                            <Vertex>
+                                                <Position>
+                                                    <LanePosition roadId="1" laneId="2" offset="0" s="${$PedestrianS}">
+                                                        <Orientation type="relative" h="0" p="0" r="0" />
+                                                    </LanePosition>
+                                                </Position>
+                                            </Vertex>
+                                        </Polyline>
+                                    </Shape>
+                                </Trajectory>
+                                <TimeReference>
+                                    <None />
+                                </TimeReference>
+                                <TrajectoryFollowingMode followingMode="follow" />
+                            </FollowTrajectoryAction>
+                        </RoutingAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <ControllerAction>
+                            <ActivateControllerAction longitudinal="true" lateral="true" />
+                        </ControllerAction>
+                    </PrivateAction>
+                </Private>
+            </Actions>
+        </Init>
+        <Story name="MyStory">
+            <Act name="CutInAndBrakeAct">
+                <ManeuverGroup maximumExecutionCount="1" name="MyManeuverGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Pedestrian" />
+                    </Actors>
+                    <Maneuver>
+                        <Event name="PedestrianWalkEvent" priority="overwrite">
+                            <Action name="PedestrianWalkAction">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsShape="step" dynamicsDimension="time" value="0.0" />
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="$v0_p" />
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition name="PedestrianWalkTrigger " delay="0" conditionEdge="none">
+                                        
+                                        <ByValueCondition>
+                                            <SimulationTimeCondition value="0" rule="greaterThan" />
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup maximumExecutionCount="1" name="MyManeuverGroup2">
+                    
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Ego" />
+
+
+                    </Actors>
+                    <Maneuver name="EgoSpeedManeuver">
+                        <Event name="StopVehicleEvent" priority="overwrite">
+
+
+                            
+
+                            
+                            
+
+                                
+                                
+
+                                
+                                
+                                
+
+
+                            
+
+                            
+
+                            
+                                    
+
+                                
+                                
+                            
+                            
+                            
+
+                                
+                                <Action name="StopVehicleAction">
+                                    <PrivateAction>
+                                        <LongitudinalAction>
+                                            <SpeedAction>
+                                                <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="0.196" />
+                                                <SpeedActionTarget>
+                                                    <AbsoluteTargetSpeed value="1.53" />
+                                                </SpeedActionTarget>
+                                            </SpeedAction>
+                                        </LongitudinalAction>
+                                    </PrivateAction>
+                                </Action>
+
+                                
+                                <StartTrigger>
+                                    <ConditionGroup>
+                                    <Condition name="brake_Condition" delay="0" conditionEdge="rising">
+                                        <ByEntityCondition>
+                                            <TriggeringEntities triggeringEntitiesRule="any">
+                                                <EntityRef entityRef="Ego" />
+                                            </TriggeringEntities>
+                                            <EntityCondition>
+                                                <TimeToCollisionCondition value="1.2" freespace="true" coordinatSystem="road" relativeDistanceType="longitudinal" rule="lessThan">
+                                                    <TimeToCollisionConditionTarget>
+                                                        <EntityRef entityRef="Pedestrian" />
+                                                    </TimeToCollisionConditionTarget>
+                                                </TimeToCollisionCondition>
+                                            </EntityCondition>
+                                        </ByEntityCondition>
+                                    </Condition>
+                                    </ConditionGroup>
+                                </StartTrigger>
+
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+            </Act>
+        </Story>
+        <StopTrigger>
+            <ConditionGroup>
+                <Condition name="start_trigger " delay="0" conditionEdge="none">
+                    <ByValueCondition>
+                        <SimulationTimeCondition value="10" rule="greaterThan" />
+                    </ByValueCondition>
+                </Condition>
+            </ConditionGroup>
+        </StopTrigger>
+    </Storyboard>
+</OpenSCENARIO>
