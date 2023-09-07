@@ -11,9 +11,9 @@
         <ParameterDeclaration name="a" parameterType="double" value="0.196"/>
         <ParameterDeclaration name="td" parameterType="double" value="0.7"/>
 
-        <ParameterDeclaration name="timeflag" parameterType="double" value="100"/>
+        <ParameterDeclaration name="timeflag" parameterType="double" value="0"/>
         <!-- Egoがそのまま通過するか、即時に減速しはじめるか -->
-        <ParameterDeclaration name="flag2" parameterType="double" value="0"/>
+        <ParameterDeclaration name="TimeToStop" parameterType="double" value="0"/>
         <ParameterDeclaration name="flag3" parameterType="double" value="0"/>
         <ParameterDeclaration name="flag4" parameterType="double" value="0"/>
         <ParameterDeclaration name="flag5" parameterType="double" value="0"/>
@@ -166,7 +166,8 @@
                                 <PrivateAction>
                                     <LongitudinalAction>
                                         <SpeedAction>
-                                            <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="0.196"/>
+                                            <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="$TimeToStop"/>
+                                            <!--dynamicsShape="linear" dynamicsDimension="time" value="5"の場合5秒かけてAbsoluteTargetspeedへ向かう  -->
                                             <SpeedActionTarget>
                                                 <AbsoluteTargetSpeed value="0"/>
                                             </SpeedActionTarget>

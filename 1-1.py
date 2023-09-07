@@ -5,12 +5,12 @@ import math
 tree = ET.parse("resources/esmini-sim/1-2.xosc")
 root = tree.getroot()
 
-v0_e = 40  # Egoの初速　単位はm/s
+v0_e = 10  # Egoの初速　単位はm/s
 x_e = 0  # Egoの初期位置
 v0_p = 1  # 歩行者の速度　単位はm/s
-x_p = 26  # 歩行者の初期位置
+x_p = 80  # 歩行者の初期位置
 
-a = 0.196  # 減速度
+a = 0.196  # 減速度　単位はm/s^2
 td = 0.7  # 空走時間
 
 Dy = -10  # 歩行者がどれくらい車道から離れているか
@@ -21,7 +21,7 @@ tp = abs(Dy / v0_p)  # 歩行者が車道に到達する時間
 tv = (
     v0_e / a + td - math.sqrt((v0_e / a + td) ** 2 - 2 * (Dx / a + td**2 / 2))
 )  # 車両が「減速度 a」、「空走時間 td」で減速してA’-B’で停止する時間
-s = v0_e * td - (a) * (td**2) / 2  # 停止までの走行距離
+s = v0_e * (tv + v0_e / a) / 2  # 停止までの走行距離
 
 timeflag = 100
 print("tp", tp)
@@ -46,6 +46,8 @@ if Dy < 1:  # (1〜2)
                 elem.set("value", str(x_p))
             elif elem.attrib["name"] == "Dy":
                 elem.set("value", str(Dy))
+            elif elem.attrib["name"] == "TimeToStop":
+                elem.set("value", str(tv))  # 止まるまでの時間
     elif tp > tv:  # (1)
         for elem in root.iter("ParameterDeclaration"):
             if elem.attrib["name"] == "timeflag":
