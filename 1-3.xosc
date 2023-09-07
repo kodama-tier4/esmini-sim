@@ -1,15 +1,15 @@
 <OpenSCENARIO>
     <FileHeader revMajor="1" revMinor="1" date="2022-11-15T10:00:00" description="Demonstrate ALKS controller" author="esmini-team" />
     <ParameterDeclarations>
-        <ParameterDeclaration name="v0_e" parameterType="double" value="15" />
+        <ParameterDeclaration name="v0_e" parameterType="double" value="40" />
         <ParameterDeclaration name="EgoS" parameterType="double" value="0" />
         <ParameterDeclaration name="v0_p" parameterType="double" value="1" />
-        <ParameterDeclaration name="PedestrianS" parameterType="double" value="80" />
+        <ParameterDeclaration name="PedestrianS" parameterType="double" value="26" />
         <ParameterDeclaration name="Dy" parameterType="double" value="-10" />
         <ParameterDeclaration name="a" parameterType="double" value="0.196" />
         <ParameterDeclaration name="td" parameterType="double" value="0.7" />
 
-        <ParameterDeclaration name="timeflag" parameterType="double" value="100" />
+        <ParameterDeclaration name="timeflag" parameterType="double" value="0.7" />
         
         <ParameterDeclaration name="flag2" parameterType="double" value="0" />
         <ParameterDeclaration name="flag3" parameterType="double" value="0" />
@@ -128,7 +128,8 @@
                             </Action>
                             <StartTrigger>
                                 <ConditionGroup>
-                                    <Condition name="PedestrianWalkTrigger " delay="0" conditionEdge="none">                                        
+                                    <Condition name="PedestrianWalkTrigger " delay="0" conditionEdge="none">
+                                        
                                         <ByValueCondition>
                                             <SimulationTimeCondition value="0" rule="greaterThan" />
                                         </ByValueCondition>
@@ -139,6 +140,7 @@
                     </Maneuver>
                 </ManeuverGroup>
                 <ManeuverGroup maximumExecutionCount="1" name="MyManeuverGroup2">
+                    
                     <Actors selectTriggeringEntities="false">
                         <EntityRef entityRef="Ego" />
                     </Actors>

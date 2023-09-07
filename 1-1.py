@@ -5,10 +5,10 @@ import math
 tree = ET.parse("resources/esmini-sim/1-2.xosc")
 root = tree.getroot()
 
-v0_e = 15  # Egoの初速　単位はm/s
+v0_e = 40  # Egoの初速　単位はm/s
 x_e = 0  # Egoの初期位置
 v0_p = 1  # 歩行者の速度　単位はm/s
-x_p = 80  # 歩行者の初期位置
+x_p = 26  # 歩行者の初期位置
 
 a = 0.196  # 減速度
 td = 0.7  # 空走時間
