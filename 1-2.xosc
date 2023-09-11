@@ -11,9 +11,11 @@
         <ParameterDeclaration name="a" parameterType="double" value="0.196"/>
         <ParameterDeclaration name="td" parameterType="double" value="0.7"/>
 
-        <ParameterDeclaration name="timeflag" parameterType="double" value="0"/>
+        <ParameterDeclaration name="timeflag1" parameterType="double" value="100"/>
+        <ParameterDeclaration name="timeflag2" parameterType="double" value="100"/>
         <!-- Egoがそのまま通過するか、即時に減速しはじめるか -->
         <ParameterDeclaration name="TimeToStop" parameterType="double" value="0"/>
+        <ParameterDeclaration name="DistanceToStop" parameterType="double" value="0"/>
         <ParameterDeclaration name="flag3" parameterType="double" value="0"/>
         <ParameterDeclaration name="flag4" parameterType="double" value="0"/>
         <ParameterDeclaration name="flag5" parameterType="double" value="0"/>
@@ -167,6 +169,7 @@
                                     <LongitudinalAction>
                                         <SpeedAction>
                                             <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="$TimeToStop"/>
+                                            <!-- <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="$TimeToStop"/> -->
                                             <!--dynamicsShape="linear" dynamicsDimension="time" value="5"の場合5秒かけてAbsoluteTargetspeedへ向かう  -->
                                             <SpeedActionTarget>
                                                 <AbsoluteTargetSpeed value="0"/>
@@ -179,7 +182,39 @@
                                 <ConditionGroup>
                                     <Condition name="DelayConditionForStopping" delay="0" conditionEdge="rising">
                                         <ByValueCondition>
-                                            <SimulationTimeCondition name="TimerParameter" value="$timeflag" rule="greaterThan"/>
+                                            <SimulationTimeCondition name="TimerParameter" value="$timeflag1" rule="greaterThan"/>
+                                            <!-- timeparameterは、シミュレーションが始まって何秒でどうするか決める -->
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup maximumExecutionCount="1" name="MyManeuverGroup3">
+                    <!-- 車が停止し始める距離 -->
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Ego"/>
+                    </Actors>
+                    <Maneuver name="EgoSpeedManeuver">
+                        <Event name="StopVehicleEvent" priority="overwrite">
+                            <Action name="StopVehicleAction">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="distance" value="$DistanceToStop"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="0"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition name="DelayConditionForStopping" delay="0" conditionEdge="rising">
+                                        <ByValueCondition>
+                                            <SimulationTimeCondition name="TimerParameter" value="$timeflag2" rule="greaterThan"/>
                                             <!-- timeparameterは、シミュレーションが始まって何秒でどうするか決める -->
                                         </ByValueCondition>
                                     </Condition>
