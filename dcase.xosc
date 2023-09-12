@@ -80,22 +80,9 @@
                                     <ParameterDeclarations/>
                                     <Shape>
                                         <Polyline>
-                                            <TeleportAction>
-                                                <Position>
-                                                    <LanePosition roadId="1" laneId="-2" offset="0" s="${$PedestrianS}"/>
-                                                    <Orientation type="relative" h="0" p="0" r="0" />
-                                                </Position>
-                                            </TeleportAction>
                                             <Vertex>
                                                 <Position>
-                                                    <LanePosition roadId="1" laneId="2" offset="0" s="${$PedestrianS}">
-                                                        <Orientation type="relative" h="0" p="0" r="0" />
-                                                    </LanePosition>
-                                                </Position>
-                                            </Vertex>
-                                            <!-- <Vertex>
-                                                <Position>
-                                                    <WorldPosition x="${$PedestrianS}" y="-5"/>
+                                                    <WorldPosition x="${$PedestrianS}" y="-4.0"/>
                                                 </Position>
                                             </Vertex>
                                             <Vertex>
@@ -107,7 +94,7 @@
                                                 <Position>
                                                     <WorldPosition x="${$PedestrianS + 10}" y="5.0"/>
                                                 </Position>
-                                            </Vertex> -->
+                                            </Vertex>
                                         </Polyline>
                                     </Shape>
                                 </Trajectory>
@@ -149,9 +136,9 @@
                             </Action>
                             <StartTrigger>
                                 <ConditionGroup>
-                                    <Condition name="PedestrianWalkTrigger " delay="0" conditionEdge="none">                                        <!-- 歩行者が歩き始める時間 -->
+                                    <Condition name="PedestrianWalkTrigger " delay="0" conditionEdge="none">
                                         <ByValueCondition>
-                                            <SimulationTimeCondition value="0" rule="greaterThan"/>
+                                            <SimulationTimeCondition value="2" rule="greaterThan"/>
                                         </ByValueCondition>
                                     </Condition>
                                 </ConditionGroup>

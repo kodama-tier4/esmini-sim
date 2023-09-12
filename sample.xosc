@@ -1,6 +1,0 @@
-<root>
-    <ParameterDeclarations>
-        <ParameterDeclaration name="Dx" parameterType="double" value="30" />
-        <ParameterDeclaration name="Dy" parameterType="double" value="40" />
-    </ParameterDeclarations>
-</root>

@@ -3,8 +3,8 @@
     <ParameterDeclarations>
         <ParameterDeclaration name="v0_e" parameterType="double" value="10" />
         <ParameterDeclaration name="EgoS" parameterType="double" value="0" />
-        <ParameterDeclaration name="v0_p" parameterType="double" value="0.5" />
-        <ParameterDeclaration name="PedestrianS" parameterType="double" value="35" />
+        <ParameterDeclaration name="v0_p" parameterType="double" value="1" />
+        <ParameterDeclaration name="PedestrianS" parameterType="double" value="40" />
         <ParameterDeclaration name="Dy" parameterType="double" value="7" />
         <ParameterDeclaration name="a" parameterType="double" value="0.196" />
         <ParameterDeclaration name="td" parameterType="double" value="0.7" />
