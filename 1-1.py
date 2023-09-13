@@ -3,6 +3,8 @@ import math
 
 # XMLファイルを読み込む
 tree = ET.parse("resources/esmini-sim/1-2.xosc")
+# tree = ET.parse("/home/kotoriyabe/esmini-1/resources/esmini-sim/1-2.xosc")
+
 root = tree.getroot()
 
 v0_e = 10  # Egoの初速　単位はm/s
@@ -134,3 +136,4 @@ else:  # （5〜6）
                 elem.set("value", str(Dy))
 
 tree.write("resources/esmini-sim/1-3.xosc")
+# tree.write("/home/kotoriyabe/esmini-1/resources/esmini-sim/1-3.xosc")
