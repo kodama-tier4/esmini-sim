@@ -65,8 +65,8 @@ if Dy < 1:  # (1〜3)
                 elem.set("value", str(timeflag2))
             elif elem.attrib["name"] == "DistanceToStop":
                 elem.set("value", str(s))  # 止まるまでの距離
-            elif elem.attrib["name"] == "PedestrianS":
-                elem.set("value", str(x_p))
+            # elif elem.attrib["name"] == "PedestrianS":
+            #     elem.set("value", str(x_p))
             # elif elem.attrib["name"] == "v0_e":
             #     elem.set("value", str(v0_e))
             # elif elem.attrib["name"] == "EgoS":
