@@ -3,23 +3,10 @@
 <OpenSCENARIO>
     <FileHeader revMajor="1" revMinor="1" date="2022-11-15T10:00:00" description="Demonstrate ALKS controller" author="esmini-team"/>
     <ParameterDeclarations>
-        <ParameterDeclaration name="v0_e" parameterType="double" value="16"/>
+        <ParameterDeclaration name="EgoSpeed" parameterType="double" value="16"/>
         <ParameterDeclaration name="EgoS" parameterType="double" value="32"/>
-        <ParameterDeclaration name="v0_p" parameterType="double" value="1.0"/>
-        <ParameterDeclaration name="PedestrianS" parameterType="double" value="70"/>
-        <ParameterDeclaration name="Dy" parameterType="double" value="1"/>
-        <ParameterDeclaration name="a" parameterType="double" value="0.196"/>
-        <ParameterDeclaration name="td" parameterType="double" value="0.7"/>
-
-        <ParameterDeclaration name="timeflag1" parameterType="double" value="100"/>
-        <ParameterDeclaration name="timeflag2" parameterType="double" value="100"/>
-        <!-- Egoがそのまま通過するか、即時に減速しはじめるか -->
-        <ParameterDeclaration name="TimeToStop" parameterType="double" value="0"/>
-        <ParameterDeclaration name="DistanceToStop" parameterType="double" value="0"/>
-        <ParameterDeclaration name="flag3" parameterType="double" value="0"/>
-        <ParameterDeclaration name="flag4" parameterType="double" value="0"/>
-        <ParameterDeclaration name="flag5" parameterType="double" value="0"/>
-        <ParameterDeclaration name="flag6" parameterType="double" value="0"/>
+        <ParameterDeclaration name="PedestrianSpeed" parameterType="double" value="1.0"/>
+        <ParameterDeclaration name="PedestrianS" parameterType="double" value="110"/>
     </ParameterDeclarations>
     <CatalogLocations>
         <VehicleCatalog>
@@ -28,9 +15,9 @@
         <PedestrianCatalog>
             <Directory path="../xosc/Catalogs/Pedestrians"/>
         </PedestrianCatalog>
-        <!-- <ControllerCatalog>
+        <ControllerCatalog>
             <Directory path="../xosc/Catalogs/Controllers"/>
-        </ControllerCatalog> -->
+        </ControllerCatalog>
     </CatalogLocations>
     <RoadNetwork>
         <LogicFile filepath="../xodr/straight_500m.xodr"/>
@@ -39,7 +26,7 @@
         <ScenarioObject name="Ego">
             <CatalogReference catalogName="VehicleCatalog" entryName="car_white"/>
             <ObjectController>
-                <!-- <CatalogReference catalogName="ControllerCatalog" entryName="ALKS_R157SM_Controller">
+                <CatalogReference catalogName="ControllerCatalog" entryName="ALKS_R157SM_Controller">
                     <ParameterAssignments>
                         <ParameterAssignment parameterRef="Mode" value="override"/>
                         <ParameterAssignment parameterRef="Model" value="ReferenceDriver"/>
@@ -51,7 +38,7 @@
                         <ParameterAssignment parameterRef="AlwaysTrigOnScenario" value="true"/>
                         <ParameterAssignment parameterRef="OverlapTolerance" value="0.0"/>
                     </ParameterAssignments>
-                </CatalogReference> -->
+                </CatalogReference>
             </ObjectController>
         </ScenarioObject>
         <ScenarioObject name="Pedestrian">
@@ -74,7 +61,7 @@
                             <SpeedAction>
                                 <SpeedActionDynamics dynamicsShape="step" dynamicsDimension="time" value="0.0"/>
                                 <SpeedActionTarget>
-                                    <AbsoluteTargetSpeed value="$v0_e"/>
+                                    <AbsoluteTargetSpeed value="$EgoSpeed"/>
                                 </SpeedActionTarget>
                             </SpeedAction>
                         </LongitudinalAction>
@@ -93,17 +80,19 @@
                                     <ParameterDeclarations/>
                                     <Shape>
                                         <Polyline>
-                                            <TeleportAction>
-                                                <Position>
-                                                    <LanePosition roadId="1" laneId="-2" offset="$Dy" s="${$PedestrianS}"/>
-                                                    <Orientation type="relative" h="0" p="0" r="0" />
-                                                </Position>
-                                            </TeleportAction>
                                             <Vertex>
                                                 <Position>
-                                                    <LanePosition roadId="1" laneId="2" offset="0" s="${$PedestrianS}">
-                                                        <Orientation type="relative" h="0" p="0" r="0" />
-                                                    </LanePosition>
+                                                    <WorldPosition x="${$PedestrianS}" y="-4.0"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition x="${$PedestrianS}" y="5.0"/>
+                                                </Position>
+                                            </Vertex>
+                                            <Vertex>
+                                                <Position>
+                                                    <WorldPosition x="${$PedestrianS + 10}" y="5.0"/>
                                                 </Position>
                                             </Vertex>
                                         </Polyline>
@@ -125,6 +114,7 @@
             </Actions>
         </Init>
         <Story name="MyStory">
+            <ParameterDeclarations/>
             <Act name="CutInAndBrakeAct">
                 <ManeuverGroup maximumExecutionCount="1" name="MyManeuverGroup">
                     <Actors selectTriggeringEntities="false">
@@ -138,7 +128,7 @@
                                         <SpeedAction>
                                             <SpeedActionDynamics dynamicsShape="step" dynamicsDimension="time" value="0.0"/>
                                             <SpeedActionTarget>
-                                                <AbsoluteTargetSpeed value="$v0_p"/>
+                                                <AbsoluteTargetSpeed value="$PedestrianSpeed"/>
                                             </SpeedActionTarget>
                                         </SpeedAction>
                                     </LongitudinalAction>
@@ -147,9 +137,8 @@
                             <StartTrigger>
                                 <ConditionGroup>
                                     <Condition name="PedestrianWalkTrigger " delay="0" conditionEdge="none">
-                                        <!-- 歩行者が歩き始める時間 -->
                                         <ByValueCondition>
-                                            <SimulationTimeCondition value="0" rule="greaterThan"/>
+                                            <SimulationTimeCondition value="2" rule="greaterThan"/>
                                         </ByValueCondition>
                                     </Condition>
                                 </ConditionGroup>
@@ -157,72 +146,8 @@
                         </Event>
                     </Maneuver>
                 </ManeuverGroup>
-                <ManeuverGroup maximumExecutionCount="1" name="MyManeuverGroup2">
-                    <!-- 車が停止し始める時間 -->
-                    <Actors selectTriggeringEntities="false">
-                        <EntityRef entityRef="Ego"/>
-                    </Actors>
-                    <Maneuver name="EgoSpeedManeuver">
-                        <Event name="StopVehicleEvent" priority="overwrite">
-                            <Action name="StopVehicleAction">
-                                <PrivateAction>
-                                    <LongitudinalAction>
-                                        <SpeedAction>
-                                            <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="$TimeToStop"/>
-                                            <!-- <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="$TimeToStop"/> -->
-                                            <!--dynamicsShape="linear" dynamicsDimension="time" value="5"の場合5秒かけてAbsoluteTargetspeedへ向かう  -->
-                                            <SpeedActionTarget>
-                                                <AbsoluteTargetSpeed value="0"/>
-                                            </SpeedActionTarget>
-                                        </SpeedAction>
-                                    </LongitudinalAction>
-                                </PrivateAction>
-                            </Action>
-                            <StartTrigger>
-                                <ConditionGroup>
-                                    <Condition name="DelayConditionForStopping" delay="0" conditionEdge="rising">
-                                        <ByValueCondition>
-                                            <SimulationTimeCondition name="TimerParameter" value="$timeflag1" rule="greaterThan"/>
-                                            <!-- timeparameterは、シミュレーションが始まって何秒でどうするか決める -->
-                                        </ByValueCondition>
-                                    </Condition>
-                                </ConditionGroup>
-                            </StartTrigger>
-                        </Event>
-                    </Maneuver>
-                </ManeuverGroup>
-                <ManeuverGroup maximumExecutionCount="1" name="MyManeuverGroup3">
-                    <!-- 車が停止し始める距離 -->
-                    <Actors selectTriggeringEntities="false">
-                        <EntityRef entityRef="Ego"/>
-                    </Actors>
-                    <Maneuver name="EgoSpeedManeuver">
-                        <Event name="StopVehicleEvent" priority="overwrite">
-                            <Action name="StopVehicleAction">
-                                <PrivateAction>
-                                    <LongitudinalAction>
-                                        <SpeedAction>
-                                            <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="distance" value="$DistanceToStop"/>
-                                            <SpeedActionTarget>
-                                                <AbsoluteTargetSpeed value="0"/>
-                                            </SpeedActionTarget>
-                                        </SpeedAction>
-                                    </LongitudinalAction>
-                                </PrivateAction>
-                            </Action>
-                            <StartTrigger>
-                                <ConditionGroup>
-                                    <Condition name="DelayConditionForStopping" delay="0" conditionEdge="rising">
-                                        <ByValueCondition>
-                                            <SimulationTimeCondition name="TimerParameter" value="$timeflag2" rule="greaterThan"/>
-                                            <!-- timeparameterは、シミュレーションが始まって何秒でどうするか決める -->
-                                        </ByValueCondition>
-                                    </Condition>
-                                </ConditionGroup>
-                            </StartTrigger>
-                        </Event>
-                    </Maneuver>
-                </ManeuverGroup>
+                <StartTrigger/>
+                <StopTrigger/>
             </Act>
         </Story>
         <StopTrigger>

@@ -1,17 +1,19 @@
 <OpenSCENARIO>
     <FileHeader revMajor="1" revMinor="1" date="2022-11-15T10:00:00" description="Demonstrate ALKS controller" author="esmini-team" />
     <ParameterDeclarations>
-        <ParameterDeclaration name="v0_e" parameterType="double" value="30" />
+        <ParameterDeclaration name="v0_e" parameterType="double" value="5" />
         <ParameterDeclaration name="EgoS" parameterType="double" value="0" />
         <ParameterDeclaration name="v0_p" parameterType="double" value="1" />
-        <ParameterDeclaration name="PedestrianS" parameterType="double" value="80" />
+        <ParameterDeclaration name="PedestrianS" parameterType="double" value="30" />
         <ParameterDeclaration name="Dy" parameterType="double" value="-10" />
         <ParameterDeclaration name="a" parameterType="double" value="0.196" />
         <ParameterDeclaration name="td" parameterType="double" value="0.7" />
 
-        <ParameterDeclaration name="timeflag" parameterType="double" value="100" />
+        <ParameterDeclaration name="timeflag1" parameterType="double" value="100" />
+        <ParameterDeclaration name="timeflag2" parameterType="double" value="100" />
         
-        <ParameterDeclaration name="flag2" parameterType="double" value="0" />
+        <ParameterDeclaration name="TimeToStop" parameterType="double" value="0" />
+        <ParameterDeclaration name="DistanceToStop" parameterType="double" value="0" />
         <ParameterDeclaration name="flag3" parameterType="double" value="0" />
         <ParameterDeclaration name="flag4" parameterType="double" value="0" />
         <ParameterDeclaration name="flag5" parameterType="double" value="0" />
@@ -143,73 +145,65 @@
                     
                     <Actors selectTriggeringEntities="false">
                         <EntityRef entityRef="Ego" />
-
-
                     </Actors>
                     <Maneuver name="EgoSpeedManeuver">
                         <Event name="StopVehicleEvent" priority="overwrite">
-
-
-                            
-
-                            
-                            
-
-                                
-                                
-
-                                
-                                
-                                
-
-
-                            
-
-                            
-
-                            
-                                    
-
-                                
-                                
-                            
-                            
-                            
-
-                                
-                                <Action name="StopVehicleAction">
-                                    <PrivateAction>
-                                        <LongitudinalAction>
-                                            <SpeedAction>
-                                                <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="0.196" />
-                                                <SpeedActionTarget>
-                                                    <AbsoluteTargetSpeed value="1.53" />
-                                                </SpeedActionTarget>
-                                            </SpeedAction>
-                                        </LongitudinalAction>
-                                    </PrivateAction>
-                                </Action>
-
-                                
-                                <StartTrigger>
-                                    <ConditionGroup>
-                                    <Condition name="brake_Condition" delay="0" conditionEdge="rising">
-                                        <ByEntityCondition>
-                                            <TriggeringEntities triggeringEntitiesRule="any">
-                                                <EntityRef entityRef="Ego" />
-                                            </TriggeringEntities>
-                                            <EntityCondition>
-                                                <TimeToCollisionCondition value="1.2" freespace="true" coordinatSystem="road" relativeDistanceType="longitudinal" rule="lessThan">
-                                                    <TimeToCollisionConditionTarget>
-                                                        <EntityRef entityRef="Pedestrian" />
-                                                    </TimeToCollisionConditionTarget>
-                                                </TimeToCollisionCondition>
-                                            </EntityCondition>
-                                        </ByEntityCondition>
+                            <Action name="StopVehicleAction">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="time" value="$TimeToStop" />
+                                            
+                                            
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="0" />
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition name="DelayConditionForStopping" delay="0" conditionEdge="rising">
+                                        <ByValueCondition>
+                                            <SimulationTimeCondition name="TimerParameter" value="$timeflag1" rule="greaterThan" />
+                                            
+                                        </ByValueCondition>
                                     </Condition>
-                                    </ConditionGroup>
-                                </StartTrigger>
-
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <ManeuverGroup maximumExecutionCount="1" name="MyManeuverGroup3">
+                    
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="Ego" />
+                    </Actors>
+                    <Maneuver name="EgoSpeedManeuver">
+                        <Event name="StopVehicleEvent" priority="overwrite">
+                            <Action name="StopVehicleAction">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsShape="linear" dynamicsDimension="distance" value="$DistanceToStop" />
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="0" />
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition name="DelayConditionForStopping" delay="0" conditionEdge="rising">
+                                        <ByValueCondition>
+                                            <SimulationTimeCondition name="TimerParameter" value="$timeflag2" rule="greaterThan" />
+                                            
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
                         </Event>
                     </Maneuver>
                 </ManeuverGroup>
