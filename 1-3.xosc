@@ -1,11 +1,11 @@
 <OpenSCENARIO>
     <FileHeader revMajor="1" revMinor="1" date="2022-11-15T10:00:00" description="Demonstrate ALKS controller" author="esmini-team" />
     <ParameterDeclarations>
-        <ParameterDeclaration name="v0_e" parameterType="double" value="10" />
+        <ParameterDeclaration name="v0_e" parameterType="double" value="5" />
         <ParameterDeclaration name="EgoS" parameterType="double" value="0" />
         <ParameterDeclaration name="v0_p" parameterType="double" value="1" />
-        <ParameterDeclaration name="PedestrianS" parameterType="double" value="40" />
-        <ParameterDeclaration name="Dy" parameterType="double" value="7" />
+        <ParameterDeclaration name="PedestrianS" parameterType="double" value="30" />
+        <ParameterDeclaration name="Dy" parameterType="double" value="-10" />
         <ParameterDeclaration name="a" parameterType="double" value="0.196" />
         <ParameterDeclaration name="td" parameterType="double" value="0.7" />
 
