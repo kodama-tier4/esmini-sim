@@ -65,31 +65,9 @@ if Dy < 1:  # (1〜3)
                 elem.set("value", str(timeflag2))
             elif elem.attrib["name"] == "DistanceToStop":
                 elem.set("value", str(s))  # 止まるまでの距離
-            # elif elem.attrib["name"] == "PedestrianS":
-            #     elem.set("value", str(x_p))
-            # elif elem.attrib["name"] == "v0_e":
-            #     elem.set("value", str(v0_e))
-            # elif elem.attrib["name"] == "EgoS":
-            #     elem.set("value", str(x_e))
-            # elif elem.attrib["name"] == "v0_p":
-            #     elem.set("value", str(v0_p))
-            # elif elem.attrib["name"] == "Dy":
-            #     elem.set("value", str(Dy))
     
     elif tp > tv:  # (1)
         print("(1)を実施")
-        # for elem in root.iter("ParameterDeclaration"):
-            # if elem.attrib["name"] == "v0_e":
-            #     elem.set("value", str(v0_e))
-            # elif elem.attrib["name"] == "EgoS":
-            #     elem.set("value", str(x_e))
-            # elif elem.attrib["name"] == "v0_p":
-            #     elem.set("value", str(v0_p))
-            # elif elem.attrib["name"] == "PedestrianS":
-            #     elem.set("value", str(x_p))
-            # elif elem.attrib["name"] == "Dy":
-            #     elem.set("value", str(Dy))
-
 
     else:  # (3)
         print("(3)を実施")
@@ -100,18 +78,6 @@ if Dy < 1:  # (1〜3)
             elif elem.attrib["name"] == "TimeToStop":
                 elem.set("value", str(tv))  # 止まるまでの時間  
 
-            # elif elem.attrib["name"] == "v0_e":
-            #     elem.set("value", str(v0_e))
-            # elif elem.attrib["name"] == "EgoS":
-            #     elem.set("value", str(x_e))
-            # elif elem.attrib["name"] == "v0_p":
-            #     elem.set("value", str(v0_p))
-            # elif elem.attrib["name"] == "PedestrianS":
-            #     elem.set("value", str(x_p))
-            # elif elem.attrib["name"] == "Dy":
-            #     elem.set("value", str(Dy))
-
-
 elif (Dy >= 1) and (Dy <= 4):  # (4)
     print("(4)を実施")
     timeflag1 = td
@@ -120,16 +86,6 @@ elif (Dy >= 1) and (Dy <= 4):  # (4)
             elem.set("value", str(timeflag1))
         elif elem.attrib["name"] == "TimeToStop":
             elem.set("value", str(tv))  # 止まるまでの時間
-        # elif elem.attrib["name"] == "v0_e":
-        #     elem.set("value", str(v0_e))
-        # elif elem.attrib["name"] == "EgoS":
-        #     elem.set("value", str(x_e))
-        # elif elem.attrib["name"] == "v0_p":
-        #     elem.set("value", str(v0_p))
-        # elif elem.attrib["name"] == "PedestrianS":
-        #     elem.set("value", str(x_p))
-        # elif elem.attrib["name"] == "Dy":
-        #     elem.set("value", str(Dy))
 
 else:  # （5〜6）
     if (Dy > 4) and (Dy <= 6):  # (5)
@@ -140,30 +96,9 @@ else:  # （5〜6）
                 elem.set("value", str(timeflag2))
             elif elem.attrib["name"] == "DistanceToStop":
                 elem.set("value", str(s))  # 止まるまでの距離
-            # elif elem.attrib["name"] == "v0_e":
-            #     elem.set("value", str(v0_e))
-            # elif elem.attrib["name"] == "EgoS":
-            #     elem.set("value", str(x_e))
-            # elif elem.attrib["name"] == "v0_p":
-            #     elem.set("value", str(v0_p))
-            # elif elem.attrib["name"] == "PedestrianS":
-            #     elem.set("value", str(x_p))
-            # elif elem.attrib["name"] == "Dy":
-            #     elem.set("value", str(Dy))
 
     else:  # (6)
         print("(6)を実施")
-        # for elem in root.iter("ParameterDeclaration"):
-        #     if elem.attrib["name"] == "v0_e":
-        #         elem.set("value", str(v0_e))
-        #     elif elem.attrib["name"] == "EgoS":
-        #         elem.set("value", str(x_e))
-        #     elif elem.attrib["name"] == "v0_p":
-        #         elem.set("value", str(v0_p))
-        #     elif elem.attrib["name"] == "PedestrianS":
-        #         elem.set("value", str(x_p))
-        #     elif elem.attrib["name"] == "Dy":
-        #         elem.set("value", str(Dy))
 
 # tree.write("resources/esmini-sim/1-3.xosc")
 tree.write("/home/kotoriyabe/esmini-1/resources/esmini-sim/1-3.xosc")
