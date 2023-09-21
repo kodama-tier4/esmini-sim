@@ -43,7 +43,7 @@
                <PrivateAction>
                   <TeleportAction>
                      <Position>
-                        <RoadPosition roadId="1" s="0.0" t="-1.5"/>
+                        <RoadPosition roadId="2" s="0.0" t="-1.5"/>
                      </Position>
                   </TeleportAction>
                </PrivateAction>
