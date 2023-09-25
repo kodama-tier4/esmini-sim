@@ -62,6 +62,15 @@
                </PrivateAction>
                <!-- <PrivateAction>
                   <RoutingAction>
+                     <AcquirePositionAction>
+                        <Position>
+                           <LanePosition roadId="197" laneId="-1" offset="0" s="50"/>
+                        </Position>
+                     </AcquirePositionAction>
+                  </RoutingAction>
+               </PrivateAction> -->
+               <!-- <PrivateAction>
+                  <RoutingAction>
                      <AssignRouteAction>
                         <CatalogReference catalogName="RoutesAtFabriksgatan" entryName="HostStraightRoute"/>
                      </AssignRouteAction>
